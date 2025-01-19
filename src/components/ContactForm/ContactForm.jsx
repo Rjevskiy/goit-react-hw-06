@@ -1,61 +1,49 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { nanoid } from 'nanoid';
 import { addContact } from '../../redux/contactsSlice';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-
-import './ContactForm.css';
-
-const validationSchema = Yup.object({
-  name: Yup.string()
-    .min(3, "Ім'я повинно буди більше за 3 символа")
-    .max(50, "Ім'я не повинно перевищувати 50 символов")
-    .required("Обов'язкове поле"),
-  number: Yup.string()
-    .matches(/^[\d\-]+$/, "Номер повинен містити тільки цифри і дефіс (-)")
-    .min(3, "Довжина номера повинна бути не менше 3 символів")
-    .max(50, "Номер не повинен перевищувати 50 символів")
-    .required("Обов'язкове поле"),
-});
 
 const ContactForm = () => {
   const dispatch = useDispatch();
+  const contacts = useSelector(state => state.contacts.items); // Получаем контакты из Redux
 
-  const handleSubmit = (values, { resetForm }) => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const name = form.elements.name.value.trim();
+    const number = form.elements.number.value.trim();
+
+    if (!name || !number) {
+      alert('Please fill out all fields.');
+      return;
+    }
+
+    if (contacts.some(contact => contact.name.toLowerCase() === name.toLowerCase())) {
+      alert(`${name} is already in contacts.`);
+      return;
+    }
+
     const newContact = {
       id: nanoid(),
-      name: values.name,
-      number: values.number,
+      name,
+      number,
     };
+
     dispatch(addContact(newContact));
-    resetForm();
+    form.reset();
   };
 
   return (
-    <Formik
-      initialValues={{ name: '', number: '' }}
-      validationSchema={validationSchema}
-      onSubmit={handleSubmit}
-    >
-      <Form className="contact-form">
-        <div>
-          <label htmlFor="name">Ім'я</label>
-          <Field id="name" name="name" placeholder="Введіть ім'я" />
-          <ErrorMessage name="name" component="div" className="error" />
-        </div>
-
-        <div>
-          <label htmlFor="number">Номер</label>
-          <Field id="number" name="number" placeholder="Введіть номер" />
-          <ErrorMessage name="number" component="div" className="error" />
-        </div>
-
-        <button type="submit">Додати контакт</button>
-      </Form>
-    </Formik>
+    <form onSubmit={handleSubmit}>
+      <input name="name" placeholder="Name" />
+      <input name="number" placeholder="Number" />
+      <button type="submit">Add Contact</button>
+    </form>
   );
 };
 
 export default ContactForm;
+
+
+
 

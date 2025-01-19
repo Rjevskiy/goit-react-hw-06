@@ -1,32 +1,28 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { FaUser, FaPhone } from "react-icons/fa"; //  иконки
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { deleteContact } from '../../redux/contactsSlice';
 
+const ContactList = () => {
+  const contacts = useSelector(state => state.contacts.items);
+  const filter = useSelector(state => state.filters.name);
+  const dispatch = useDispatch();
 
+  const filteredContacts = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(filter.toLowerCase())
+  );
 
-import "./Contact.css";
-
-const Contact = ({ name, number, onDelete }) => (
-  <div className="contact">
+  return (
     <ul>
-      <li className="contactLi">
-        <FaUser className="icon" /> {name} 
-      </li>
-      <li className="contactLi">
-        <FaPhone className="icon" /> {number} 
-      </li>
+      {filteredContacts.map(({ id, name, number }) => (
+        <li key={id}>
+          {name}: {number}
+          <button onClick={() => dispatch(deleteContact(id))}>Delete</button>
+        </li>
+      ))}
     </ul>
-    <button className="butContact" onClick={onDelete}>
-      Видалити
-    </button>
-  </div>
-);
-
-Contact.propTypes = {
-  name: PropTypes.string.isRequired,
-  number: PropTypes.string.isRequired,
-  onDelete: PropTypes.func.isRequired,
+  );
 };
 
-export default Contact;
+export default ContactList;
+
 

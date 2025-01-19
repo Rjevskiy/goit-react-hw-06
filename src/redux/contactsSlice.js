@@ -1,29 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  contacts: [],
-  filter: '',
-  searchType: 'name', // 'name' или 'number'
+  items: [], // Массив для хранения контактов
 };
 
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState,
   reducers: {
-    addContact(state, action) {
-      state.contacts.push(action.payload);
+    // Добавление нового контакта
+    addContact: (state, action) => {
+      state.items.push(action.payload);
     },
-    deleteContact(state, action) {
-      state.contacts = state.contacts.filter(contact => contact.id !== action.payload);
-    },
-    setFilter(state, action) {
-      state.filter = action.payload;
-    },
-    setSearchType(state, action) {
-      state.searchType = action.payload;
+    // Удаление контакта по id
+    deleteContact: (state, action) => {
+      state.items = state.items.filter(contact => contact.id !== action.payload);
     },
   },
 });
 
-export const { addContact, deleteContact, setFilter, setSearchType } = contactsSlice.actions;
+export const { addContact, deleteContact } = contactsSlice.actions;
 export default contactsSlice.reducer;
+

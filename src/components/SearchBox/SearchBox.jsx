@@ -1,54 +1,26 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setFilter, setSearchType } from '../../redux/contactsSlice';
-
-import './SearchBox.css';
+import { changeFilter } from '../../redux/filtersSlice'; // Исправленный импорт
 
 const SearchBox = () => {
+  const filter = useSelector(state => state.filters.name); // Получаем текущее значение фильтра
   const dispatch = useDispatch();
-  const filter = useSelector(state => state.contacts.filter);
-  const searchType = useSelector(state => state.contacts.searchType);
 
-  const handleFilterChange = (e) => {
-    dispatch(setFilter(e.target.value));
-  };
-
-  const handleSearchTypeChange = (e) => {
-    dispatch(setSearchType(e.target.value));
+  const handleChange = (e) => {
+    dispatch(changeFilter(e.target.value)); // Используем правильный экшен
   };
 
   return (
-    <div className="divSBox">
-      <label className="search-label">Пошук контакту:</label>
-      <label className="labelRadio">
-        <input
-          type="radio"
-          value="name"
-          name="searchType"
-          checked={searchType === 'name'}
-          onChange={handleSearchTypeChange}
-        />
-        Введіть ім'я
-        <input
-          type="radio"
-          value="number"
-          name="searchType"
-          checked={searchType === 'number'}
-          onChange={handleSearchTypeChange}
-        />
-        Введіть номер
-      </label>
-
-      <input
-        type="text"
-        value={filter}
-        onChange={handleFilterChange}
-        placeholder="Пошук контакту..."
-        className="search-input"
-      />
-    </div>
+    <input
+      type="text"
+      value={filter}
+      onChange={handleChange}
+      placeholder="Search contacts..."
+    />
   );
 };
 
 export default SearchBox;
+
+
 
