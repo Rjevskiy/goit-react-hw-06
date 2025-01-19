@@ -6,9 +6,13 @@ import { createSelector } from '@reduxjs/toolkit';
 import "../ContactList/Contact.css";
 
 const selectFilteredContacts = createSelector(
-  [state => state.contacts.items, state => state.filters.name],
-  (contacts, filter) =>
-    contacts.filter(contact => contact.name.toLowerCase().includes(filter.toLowerCase()))
+  [state => state.contacts.items, state => state.filters.name, state => state.filters.searchType],
+  (contacts, filter, searchType) => {
+    return contacts.filter(contact => {
+      const valueToSearch = searchType === 'name' ? contact.name : contact.number;
+      return valueToSearch.toLowerCase().includes(filter.toLowerCase());
+    });
+  }
 );
 
 const ContactList = () => {
@@ -28,5 +32,6 @@ const ContactList = () => {
 };
 
 export default ContactList;
+
 
 
