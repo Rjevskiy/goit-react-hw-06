@@ -1,13 +1,15 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { changeFilter } from '../../redux/filtersSlice'; // Исправленный импорт
+import { changeFilter } from '../../redux/filtersSlice';
+
+import "./SearchBox.css";
 
 const SearchBox = () => {
-  const filter = useSelector(state => state.filters.name); // Получаем текущее значение фильтра
+  const filter = useSelector(state => state.filters.name);
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
-    dispatch(changeFilter(e.target.value)); // Используем правильный экшен
+    dispatch(changeFilter(e.target.value));
   };
 
   return (

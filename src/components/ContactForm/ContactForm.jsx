@@ -3,9 +3,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { nanoid } from 'nanoid';
 import { addContact } from '../../redux/contactsSlice';
 
+import "./ContactForm.css";
+
 const ContactForm = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts.items); // Получаем контакты из Redux
+  const contacts = useSelector(state => state.contacts.items);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -34,7 +36,7 @@ const ContactForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="contact-form" onSubmit={handleSubmit}>
       <input name="name" placeholder="Name" />
       <input name="number" placeholder="Number" />
       <button type="submit">Add Contact</button>
