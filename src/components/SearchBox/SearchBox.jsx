@@ -1,12 +1,12 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { changeFilter, changeSearchType } from '../../redux/filtersSlice'; // Добавим новый action для типа поиска
+import { changeFilter, changeSearchType } from '../../redux/filtersSlice'; 
 
 import "./SearchBox.css";
 
 const SearchBox = () => {
   const filter = useSelector(state => state.filters.name);
-  const searchType = useSelector(state => state.filters.searchType); // Получаем тип поиска
+  const searchType = useSelector(state => state.filters.searchType); 
   const dispatch = useDispatch();
 
   const handleFilterChange = (e) => {
@@ -14,7 +14,7 @@ const SearchBox = () => {
   };
 
   const handleSearchTypeChange = (e) => {
-    dispatch(changeSearchType(e.target.value)); // Меняем тип поиска
+    dispatch(changeSearchType(e.target.value)); 
   };
 
   return ( 

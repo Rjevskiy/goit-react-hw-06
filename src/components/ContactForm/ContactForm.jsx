@@ -2,8 +2,8 @@ import React from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { nanoid } from "nanoid";
-import { useDispatch } from "react-redux";
-import { addContact } from "../../redux/contactsSlice"; // Импортируем действие для добавления контакта
+import { useDispatch, useSelector } from "react-redux";
+import { addContact } from "../../redux/contactsSlice"; 
 
 import "./ContactForm.css";
 
@@ -21,15 +21,28 @@ const validationSchema = Yup.object({
 
 const ContactForm = () => {
   const dispatch = useDispatch();
+  const contacts = useSelector((state) => state.contacts.items); // Получаем текущие контакты из хранилища
 
   const handleSubmit = (values, { resetForm }) => {
+    const isDuplicate = contacts.some(
+      (contact) =>
+        contact.name.toLowerCase() === values.name.toLowerCase() ||
+        contact.number === values.number
+    );
+
+    if (isDuplicate) {
+      alert("Контакт з таким іменем або номером вже існує!");
+      return;
+    }
+
     const newContact = {
       id: nanoid(),
       name: values.name,
       number: values.number,
     };
-    dispatch(addContact(newContact)); // Отправляем контакт в Redux
-    resetForm(); // Сбрасываем форму после отправки
+
+    dispatch(addContact(newContact));
+    resetForm();
   };
 
   return (
@@ -58,6 +71,7 @@ const ContactForm = () => {
 };
 
 export default ContactForm;
+
 
 
 

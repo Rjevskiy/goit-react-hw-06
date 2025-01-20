@@ -2,8 +2,9 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteContact } from '../../redux/contactsSlice';
 import { createSelector } from '@reduxjs/toolkit';
+import Contact from '../ContactList/Contact';
+import './Contact.css';
 
-import "../ContactList/Contact.css";
 
 const selectFilteredContacts = createSelector(
   [state => state.contacts.items, state => state.filters.name, state => state.filters.searchType],
@@ -19,19 +20,29 @@ const ContactList = () => {
   const filteredContacts = useSelector(selectFilteredContacts);
   const dispatch = useDispatch();
 
+  const handleDelete = (id) => {
+    dispatch(deleteContact(id));
+  };
+
   return (
     <ul className="contact">
       {filteredContacts.map(({ id, name, number }) => (
-        <li className="contactLi" key={id}>
-          {name}: {number}
-          <button onClick={() => dispatch(deleteContact(id))}>Delete</button>
-        </li>
+        <Contact
+          key={id}
+          id={id}
+          name={name}
+          number={number}
+          onDelete={handleDelete}
+        />
       ))}
     </ul>
   );
 };
 
 export default ContactList;
+
+
+
 
 
 
