@@ -21,7 +21,7 @@ const validationSchema = Yup.object({
 
 const ContactForm = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector((state) => state.contacts.items); // Получаем текущие контакты из хранилища
+  const contacts = useSelector((state) => state.contacts.items); 
 
   const handleSubmit = (values, { resetForm }) => {
     const isDuplicate = contacts.some(
